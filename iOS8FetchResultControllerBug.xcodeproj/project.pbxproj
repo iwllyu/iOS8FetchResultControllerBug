@@ -20,6 +20,7 @@
 		45634E031DFB5FC700437E6E /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45634E021DFB5FC700437E6E /* ItemCell.swift */; };
 		45634E051DFCF15300437E6E /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45634E041DFCF15300437E6E /* DateUtils.swift */; };
 		45634E071DFCFCB300437E6E /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45634E061DFCFCB300437E6E /* NextViewController.swift */; };
+		457C99A31E0B1F860024DAD9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 457C99A21E0B1F860024DAD9 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		45634E021DFB5FC700437E6E /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		45634E041DFCF15300437E6E /* DateUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		45634E061DFCFCB300437E6E /* NextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
+		457C99A21E0B1F860024DAD9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 		45634DB91DFB5A2E00437E6E = {
 			isa = PBXGroup;
 			children = (
+				457C99A21E0B1F860024DAD9 /* README.md */,
 				45634DC41DFB5A2E00437E6E /* iOS8FetchResultControllerBug */,
 				45634DD91DFB5A2F00437E6E /* iOS8FetchResultControllerBugTests */,
 				45634DE41DFB5A2F00437E6E /* iOS8FetchResultControllerBugUITests */,
@@ -296,6 +299,7 @@
 				45634E031DFB5FC700437E6E /* ItemCell.swift in Sources */,
 				45634E011DFB5C9B00437E6E /* _Item.swift in Sources */,
 				45634E051DFCF15300437E6E /* DateUtils.swift in Sources */,
+				457C99A31E0B1F860024DAD9 /* README.md in Sources */,
 				45634DC61DFB5A2E00437E6E /* AppDelegate.swift in Sources */,
 				45634DF51DFB5ABE00437E6E /* model.xcdatamodeld in Sources */,
 			);

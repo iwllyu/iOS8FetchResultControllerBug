@@ -14,16 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        let timeIntervalSince1970 = NSDate().timeIntervalSince1970
         for i in 0...5 {
-            let item = Item(managedObjectContext: managedObjectContext)!
-            item.title = "Title \(i)"
-            item.message = "Message \(i)"
-            item.is_read = 0
-            item.date = NSDate()
+            let date = NSDate(timeIntervalSince1970: timeIntervalSince1970 + Double(i))
+            itemService.addItem(date)
         }
-        saveContext()
         
         return true
     }
@@ -38,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource("Mogen", withExtension: "momd")!
+        let modelURL = NSBundle.mainBundle().URLForResource("model", withExtension: "momd")!
         return NSManagedObjectModel(contentsOfURL: modelURL)!
     }()
     
@@ -92,6 +88,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
 }
 

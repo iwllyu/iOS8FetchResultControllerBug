@@ -9,7 +9,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="iOS8FetchResultControllerBug" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="ViewController" customModule="iOS8FetchResultControllerBug" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -18,12 +18,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="99" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FEL-1d-xs9">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="99" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FEL-1d-xs9">
+                                <rect key="frame" x="0.0" y="64" width="600" height="492"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ItemCell" rowHeight="99" id="muw-LJ-fr1" customClass="ItemCell" customModule="iOS8FetchResultControllerBug" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="600" height="99"/>
+                                        <rect key="frame" x="0.0" y="28" width="600" height="99"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="muw-LJ-fr1" id="USZ-ai-5Il">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="98"/>
@@ -65,17 +65,37 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="pca-Tm-moq"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="iTk-aS-4ug"/>
+                                </connections>
                             </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GxJ-Dx-cKk">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem title="Add Item" id="n2z-Q3-8Bb">
+                                        <connections>
+                                            <action selector="addItem:" destination="BYZ-38-t0r" id="bH6-wl-wAT"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="GxJ-Dx-cKk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="HSm-xD-pgj"/>
                             <constraint firstAttribute="trailing" secondItem="FEL-1d-xs9" secondAttribute="trailing" id="OGd-gU-kiq"/>
                             <constraint firstItem="FEL-1d-xs9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="SiZ-6K-dUV"/>
+                            <constraint firstItem="GxJ-Dx-cKk" firstAttribute="top" secondItem="FEL-1d-xs9" secondAttribute="bottom" id="Tle-oH-tAW"/>
+                            <constraint firstAttribute="trailing" secondItem="GxJ-Dx-cKk" secondAttribute="trailing" id="oIA-f8-WTV"/>
                             <constraint firstItem="FEL-1d-xs9" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="q68-BR-DgZ"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FEL-1d-xs9" secondAttribute="bottom" id="zZ6-0M-A1K"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GxJ-Dx-cKk" secondAttribute="bottom" id="wCU-zw-4EF"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5Lv-3A-N9Z"/>
+                    <connections>
+                        <outlet property="tableView" destination="FEL-1d-xs9" id="cZy-ro-UXP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     @IBOutlet weak var tableView: UITableView!
-    private static let reuseId = "NotificationCell"
+    private static let reuseId = "ItemCell"
     
     private lazy var frc: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: Item.entityName())
@@ -32,10 +32,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Notifications"
+        title = "Items"
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
-        
         do {
             try frc.performFetch()
         } catch {
@@ -48,19 +47,26 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //MARK: Toolbar Actions
+    
+    @IBAction func addItem(sender: AnyObject) {
+        itemService.addItem(NSDate())
+    }
 }
 
 //MARK: -
 //MARK: UITableViewDelegate
 extension ViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let notification = frc.objectAtIndexPath(indexPath) as? StoredNotification
+        NSLog("didSelectRowAtIndexPath \(indexPath)")
+        let item = frc.objectAtIndexPath(indexPath) as? Item
         
-        if let notification = notification {
-            notification.isRead = true
+        if let item = item {
+            item.isRead = true
             appDelegate.saveContext()
             
-            NextViewController.pushViewController(notification)
+            NextViewController.pushViewController(item)
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
@@ -77,28 +83,34 @@ extension ViewController: UITableViewDataSource {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if let sections = frc.sections where sections.count > 0 {
+            NSLog("numberOfSectionsInTableView \(sections.count)")
             return sections.count
         }
-        
+        NSLog("numberOfSectionsInTableView fall through")
         return 0
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if let sections = frc.sections {
             let sectionInfo = sections[section]
+            NSLog("numberOfRowsInSection \(section): \(sectionInfo.numberOfObjects)")
             return sectionInfo.numberOfObjects
         }
-        
+        NSLog("numberOfRowsInSection fall through")
         return 0
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let orginalDateString = frc.sections?[section].name
-        return NSDate.getStorageDate(orginalDateString)?.getDisplayString()
+        if let dateString = frc.sections?[section].name {
+            return dateString
+        } else {
+            return "Could Not Find titleForHeaderInSection"
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(ViewController.reuseId, forIndexPath: indexPath) as! NotificationCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(ViewController.reuseId, forIndexPath: indexPath) as! ItemCell
         
         configureCell(cell, atIndexPath: indexPath)
         cell.updateConstraintsIfNeeded() //multi line labels on iOS8
@@ -106,25 +118,11 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
     
-    func configureCell(cell: NotificationCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(cell: ItemCell, atIndexPath indexPath: NSIndexPath) {
         // Fetch Record
-        let storedNotification = frc.objectAtIndexPath(indexPath) as? StoredNotification
-        cell.configureCell(storedNotification)
+        let item = frc.objectAtIndexPath(indexPath) as? Item
+        cell.configureCell(item)
     }
-    
-    //Swipe/slide to delete
-    //    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    //        if editingStyle == .Delete {
-    //            if var sn = frc.objectAtIndexPath(indexPath) as? StoredNotification {
-    //                sn.isDeleted_ = true
-    //                appDelegate.saveContext()
-    //
-    //            } else {
-    //                log.error("Could not cast object to StoredNotification")
-    //            }
-    //
-    //        }
-    //    }
 }
 
 
@@ -132,27 +130,13 @@ extension ViewController: UITableViewDataSource {
 //MARK: NSFetchedResultsControllerDelegate
 extension ViewController: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        log.info("begin updates")
-        //        let request = NSFetchRequest(entityName: StoredNotification.entityName())
-        //        request.sortDescriptors = [
-        //            NSSortDescriptor(key: StoredNotificationAttributes.date_notified.rawValue, ascending: false)
-        //        ]
-        //        do{
-        //            let fetchedObjects = try appDelegate.managedObjectContext.executeFetchRequest(request) as? [StoredNotification]
-        //            if let fetchedObjects = fetchedObjects {
-        //                for object in fetchedObjects {
-        //                    log.debug(object)
-        //                }
-        //            }
-        //        } catch {
-        //            log.error(error)
-        //        }
+        NSLog("controllerWillChangeContent")
         tableView.beginUpdates()
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
-        log.info("end updates")
+        NSLog("controllerDidChangeContent")
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
@@ -169,8 +153,8 @@ extension ViewController: NSFetchedResultsControllerDelegate {
                 return "Move"
             }
         }()
-        let message = (anObject as! StoredNotification).message
-        log.info("anObject: \(message), indexPath: \(indexPath), newIndexPath: \(newIndexPath), type: \(typeString)")
+        let message = (anObject as! Item).message
+        NSLog("type: \(typeString): anObject: \(message), indexPath: \(indexPath), newIndexPath: \(newIndexPath)")
         switch (type) {
         case .Insert:
             if let indexPath = newIndexPath {
@@ -183,7 +167,7 @@ extension ViewController: NSFetchedResultsControllerDelegate {
         case .Update:
             if let indexPath = indexPath {
                 //                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-                let cell = tableView.cellForRowAtIndexPath(indexPath) as! NotificationCell
+                let cell = tableView.cellForRowAtIndexPath(indexPath) as! ItemCell
                 configureCell(cell, atIndexPath: indexPath)
             }
         case .Move:
@@ -209,7 +193,7 @@ extension ViewController: NSFetchedResultsControllerDelegate {
                 return "Move"
             }
         }()
-        log.info("sectionInfo: \(sectionInfo), sectionIndex: \(sectionIndex), type: \(typeString)")
+        NSLog("sectionInfo: \(sectionInfo), sectionIndex: \(sectionIndex), type: \(typeString)")
         switch (type) {
         case .Insert:
             tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
