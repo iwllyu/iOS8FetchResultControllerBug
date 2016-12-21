@@ -28,4 +28,4 @@ It doesn't always display this next one but sometimes it does.
 
 ## Workarounds?
 
-Solutions welcome
+I could just reload the entire table instead of relying on `didChangeObject`, probably
